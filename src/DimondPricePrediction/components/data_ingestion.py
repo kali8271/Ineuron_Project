@@ -7,4 +7,3 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         pass
 
-    
