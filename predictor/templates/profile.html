@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 500px; margin-top: 60px;">
+    <div class="card p-4 shadow-sm">
+        <h3 class="mb-3 text-center">User Profile</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" value="{{ user.username }}" disabled>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" value="{{ user.email }}">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Email</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{% url 'change_password' %}" class="btn btn-link">Change Password</a>
+        </div>
+        {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

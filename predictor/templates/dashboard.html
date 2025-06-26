@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 900px; margin-top: 60px;">
+    <div class="card p-4 shadow-sm">
+        <h3 class="mb-3 text-center">Welcome, {{ user.username }}!</h3>
+        <div class="text-center mb-3">
+            <a href="/predict/" class="btn btn-primary">Make a New Prediction</a>
+            <a href="{% url 'download_predictions_csv' %}" class="btn btn-success ml-2">Download CSV</a>
+            <a href="{% url 'download_predictions_pdf' %}" class="btn btn-danger ml-2">Download PDF</a>
+        </div>
+        <!-- Charts Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5 class="text-center">Price Over Time</h5>
+                <canvas id="priceChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <h5 class="text-center">Carat Distribution</h5>
+                <canvas id="caratChart"></canvas>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h5 class="text-center">Model Feature Importance</h5>
+                <canvas id="featureImportanceChart"></canvas>
+            </div>
+        </div>
+        {% if predictions %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Carat</th>
+                        <th>Depth</th>
+                        <th>Table</th>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>Z</th>
+                        <th>Cut</th>
+                        <th>Color</th>
+                        <th>Clarity</th>
+                        <th>Predicted Price ($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in predictions %}
+                    <tr>
+                        <td>{{ p.created_at|date:'Y-m-d H:i' }}</td>
+                        <td>{{ p.carat }}</td>
+                        <td>{{ p.depth }}</td>
+                        <td>{{ p.table }}</td>
+                        <td>{{ p.x }}</td>
+                        <td>{{ p.y }}</td>
+                        <td>{{ p.z }}</td>
+                        <td>{{ p.cut }}</td>
+                        <td>{{ p.color }}</td>
+                        <td>{{ p.clarity }}</td>
+                        <td><strong>{{ p.predicted_price }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center">No predictions yet. Make your first prediction!</p>
+        {% endif %}
+    </div>
+</div>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chartData = {{ chart_data_json|safe }};
+    const priceLabels = chartData.map(d => d.created_at);
+    const priceData = chartData.map(d => d.predicted_price);
+    const caratData = chartData.map(d => d.carat);
+
+    // Price over time
+    new Chart(document.getElementById('priceChart'), {
+        type: 'line',
+        data: {
+            labels: priceLabels,
+            datasets: [{
+                label: 'Predicted Price ($)',
+                data: priceData,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                fill: true,
+                tension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { x: { title: { display: true, text: 'Date' } }, y: { title: { display: true, text: 'Price ($)' } } }
+        }
+    });
+
+    // Carat distribution
+    new Chart(document.getElementById('caratChart'), {
+        type: 'bar',
+        data: {
+            labels: priceLabels,
+            datasets: [{
+                label: 'Carat',
+                data: caratData,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { x: { title: { display: true, text: 'Date' } }, y: { title: { display: true, text: 'Carat' } } }
+        }
+    });
+
+    // Feature Importance Chart
+    fetch('{% url "feature_importance" %}')
+        .then(response => response.json())
+        .then(data => {
+            if (data.labels && data.values) {
+                new Chart(document.getElementById('featureImportanceChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Importance',
+                            data: data.values,
+                            backgroundColor: 'rgba(255, 206, 86, 0.7)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: { x: { title: { display: true, text: 'Feature' }, ticks: { autoSkip: false, maxRotation: 90, minRotation: 45 } }, y: { title: { display: true, text: 'Importance' } } }
+                    }
+                });
+            }
+        });
+</script>
+{% endblock %} 

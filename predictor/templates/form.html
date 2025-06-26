@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% block title %}Diamond Price Prediction Form{% endblock %}
+{% block extra_head %}
+<style>
+    .step { display: none; }
+    .step.active { display: block; }
+    .step-buttons { margin-top: 24px; }
+    .progress { height: 20px; }
+    .progress-bar { font-weight: 600; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="form-title text-center">
+        <img src="https://img.icons8.com/ios-filled/50/000000/diamond.png" alt="Logo" style="margin-bottom: 8px;">
+        <div>Diamond Price Prediction</div>
+    </div>
+    <div class="progress mb-4">
+        <div id="wizard-progress" class="progress-bar bg-success" role="progressbar" style="width: 16.6%;">Step 1 of 6</div>
+    </div>
+    <form id="predictForm" action="/predict/" method="POST" novalidate>
+        <!-- Step 1: Carat -->
+        <div class="step active" id="step-1">
+            <div class="step-info">Step 1: Enter the carat weight of the diamond (e.g. 0.7)</div>
+            <label for="carat" class="form-label">Carat</label>
+            <input type="number" step="any" class="form-control" id="carat" name="carat" placeholder="e.g. 0.7" required title="Carat weight of the diamond">
+            <div class="feedback" id="caratFeedback">Please enter a valid carat value.</div>
+        </div>
+        <!-- Step 2: Depth, Table -->
+        <div class="step" id="step-2">
+            <div class="step-info">Step 2: Enter the depth and table percentages</div>
+            <label for="depth" class="form-label">Depth</label>
+            <input type="number" step="any" class="form-control" id="depth" name="depth" placeholder="e.g. 61.5" required title="Total depth percentage">
+            <div class="feedback" id="depthFeedback">Please enter a valid depth value.</div>
+            <label for="table" class="form-label mt-3">Table</label>
+            <input type="number" step="any" class="form-control" id="table" name="table" placeholder="e.g. 57.0" required title="Table percentage">
+            <div class="feedback" id="tableFeedback">Please enter a valid table value.</div>
+        </div>
+        <!-- Step 3: x, y, z -->
+        <div class="step" id="step-3">
+            <div class="step-info">Step 3: Enter the dimensions in mm</div>
+            <label for="x" class="form-label">x (length)</label>
+            <input type="number" step="any" class="form-control" id="x" name="x" placeholder="e.g. 5.7" required title="Length in mm">
+            <div class="feedback" id="xFeedback">Please enter a valid x value.</div>
+            <label for="y" class="form-label mt-3">y (width)</label>
+            <input type="number" step="any" class="form-control" id="y" name="y" placeholder="e.g. 5.7" required title="Width in mm">
+            <div class="feedback" id="yFeedback">Please enter a valid y value.</div>
+            <label for="z" class="form-label mt-3">z (depth)</label>
+            <input type="number" step="any" class="form-control" id="z" name="z" placeholder="e.g. 3.5" required title="Depth in mm">
+            <div class="feedback" id="zFeedback">Please enter a valid z value.</div>
+        </div>
+        <!-- Step 4: Cut -->
+        <div class="step" id="step-4">
+            <div class="step-info">Step 4: Select the cut quality</div>
+            <label for="cut" class="form-label">Cut</label>
+            <select class="form-select" id="cut" name="cut" required title="Cut quality">
+                <option value="">Select cut</option>
+                <option value="Fair">Fair</option>
+                <option value="Good">Good</option>
+                <option value="Very Good">Very Good</option>
+                <option value="Premium">Premium</option>
+                <option value="Ideal">Ideal</option>
+            </select>
+            <div class="feedback" id="cutFeedback">Please select a cut.</div>
+        </div>
+        <!-- Step 5: Color -->
+        <div class="step" id="step-5">
+            <div class="step-info">Step 5: Select the color grade</div>
+            <label for="color" class="form-label">Color</label>
+            <select class="form-select" id="color" name="color" required title="Color grade">
+                <option value="">Select color</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+                <option value="J">J</option>
+            </select>
+            <div class="feedback" id="colorFeedback">Please select a color.</div>
+        </div>
+        <!-- Step 6: Clarity & Review -->
+        <div class="step" id="step-6">
+            <div class="step-info">Step 6: Select the clarity grade and review your input</div>
+            <label for="clarity" class="form-label">Clarity</label>
+            <select class="form-select" id="clarity" name="clarity" required title="Clarity grade">
+                <option value="">Select clarity</option>
+                <option value="I1">I1</option>
+                <option value="SI2">SI2</option>
+                <option value="SI1">SI1</option>
+                <option value="VS2">VS2</option>
+                <option value="VS1">VS1</option>
+                <option value="VVS2">VVS2</option>
+                <option value="VVS1">VVS1</option>
+                <option value="IF">IF</option>
+            </select>
+            <div class="feedback" id="clarityFeedback">Please select a clarity.</div>
+            <div id="live-prediction-result" class="alert alert-info mt-4 text-center" style="display:none;"></div>
+        </div>
+        <div class="step-buttons d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" id="prevBtn" style="display:none;">Previous</button>
+            <button type="button" class="btn btn-success" id="nextBtn">Next</button>
+            <button type="submit" class="btn btn-primary" id="predictBtn" style="display:none;">Predict Price</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const steps = document.querySelectorAll('.step');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const predictBtn = document.getElementById('predictBtn');
+const progressBar = document.getElementById('wizard-progress');
+let currentStep = 0;
+
+function showStep(n) {
+    steps.forEach((step, i) => {
+        step.classList.toggle('active', i === n);
+    });
+    prevBtn.style.display = n > 0 ? '' : 'none';
+    nextBtn.style.display = n < steps.length - 1 ? '' : 'none';
+    predictBtn.style.display = n === steps.length - 1 ? '' : 'none';
+    progressBar.style.width = ((n+1)/steps.length*100) + '%';
+    progressBar.textContent = `Step ${n+1} of ${steps.length}`;
+}
+nextBtn.onclick = function() {
+    if (validateStep(currentStep)) {
+        currentStep++;
+        showStep(currentStep);
+    }
+};
+prevBtn.onclick = function() {
+    currentStep--;
+    showStep(currentStep);
+};
+function validateStep(n) {
+    let valid = true;
+    if (n === 0) {
+        const input = document.getElementById('carat');
+        const feedback = document.getElementById('caratFeedback');
+        if (!input.value || isNaN(input.value)) {
+            feedback.style.display = 'block';
+            valid = false;
+        } else {
+            feedback.style.display = 'none';
+        }
+    }
+    if (n === 1) {
+        ['depth','table'].forEach(id => {
+            const input = document.getElementById(id);
+            const feedback = document.getElementById(id+'Feedback');
+            if (!input.value || isNaN(input.value)) {
+                feedback.style.display = 'block';
+                valid = false;
+            } else {
+                feedback.style.display = 'none';
+            }
+        });
+    }
+    if (n === 2) {
+        ['x','y','z'].forEach(id => {
+            const input = document.getElementById(id);
+            const feedback = document.getElementById(id+'Feedback');
+            if (!input.value || isNaN(input.value)) {
+                feedback.style.display = 'block';
+                valid = false;
+            } else {
+                feedback.style.display = 'none';
+            }
+        });
+    }
+    if (n === 3) {
+        const select = document.getElementById('cut');
+        const feedback = document.getElementById('cutFeedback');
+        if (!select.value) {
+            feedback.style.display = 'block';
+            valid = false;
+        } else {
+            feedback.style.display = 'none';
+        }
+    }
+    if (n === 4) {
+        const select = document.getElementById('color');
+        const feedback = document.getElementById('colorFeedback');
+        if (!select.value) {
+            feedback.style.display = 'block';
+            valid = false;
+        } else {
+            feedback.style.display = 'none';
+        }
+    }
+    if (n === 5) {
+        const select = document.getElementById('clarity');
+        const feedback = document.getElementById('clarityFeedback');
+        if (!select.value) {
+            feedback.style.display = 'block';
+            valid = false;
+        } else {
+            feedback.style.display = 'none';
+        }
+    }
+    return valid;
+}
+showStep(currentStep);
+
+// Live prediction AJAX (only on last step)
+const fields = ['carat','depth','table','x','y','z','cut','color','clarity'];
+fields.forEach(id => {
+    document.getElementById(id).addEventListener('input', livePredict);
+    if(['cut','color','clarity'].includes(id)) {
+        document.getElementById(id).addEventListener('change', livePredict);
+    }
+});
+function livePredict() {
+    if (currentStep !== steps.length - 1) return;
+    const form = document.getElementById('predictForm');
+    const data = new FormData(form);
+    fetch('/live-predict/', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: data
+    })
+    .then(response => response.json())
+    .then(result => {
+        const resultDiv = document.getElementById('live-prediction-result');
+        if(result.success) {
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = 'Live Predicted Price: $' + result.prediction;
+        } else {
+            resultDiv.style.display = 'none';
+        }
+    })
+    .catch(() => {
+        document.getElementById('live-prediction-result').style.display = 'none';
+    });
+}
+// Prevent form submit if not on last step
+const form = document.getElementById('predictForm');
+form.addEventListener('submit', function(event) {
+    if (currentStep !== steps.length - 1 || !validateStep(currentStep)) {
+        event.preventDefault();
+    }
+});
+</script>
+{% endblock %} 

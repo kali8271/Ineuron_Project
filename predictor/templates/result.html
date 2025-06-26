@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Prediction Result{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card p-4 mt-5">
+        <div class="text-center mb-3">
+            <img src="https://img.icons8.com/ios-filled/50/000000/diamond.png" alt="Logo">
+        </div>
+        <div class="result-title text-center">Diamond Price Prediction Result</div>
+        <div class="result-value text-center">${{ final_result }}</div>
+        <a href="/predict/" class="btn btn-outline-primary mt-3">Predict Another</a>
+        <a href="/" class="btn btn-link mt-2">Back to Home</a>
+    </div>
+</div>
+{% endblock %} 

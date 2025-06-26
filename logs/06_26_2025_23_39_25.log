@@ -1,0 +1,3 @@
+[2025-06-26 23:39:28,382] 28 root - INFO - Splitting Dependent and Independent variables from train and test data
+[2025-06-26 23:39:29,413] 79 root - INFO - Model Report : {'LinearRegression': 0.9195816162136057, 'Lasso': 0.91962901032608, 'Ridge': 0.919595655290091, 'Elasticnet': 0.8144186894903611}
+[2025-06-26 23:39:29,414] 92 root - INFO - Best Model Found , Model Name : Lasso , R2 Score : 0.91962901032608

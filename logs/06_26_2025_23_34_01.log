@@ -1,0 +1,103 @@
+[2025-06-26 23:34:07,958] 253 django.request - WARNING - Not Found: /favicon.ico
+[2025-06-26 23:34:19,405] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:34:19,406] 53 root - INFO - Exception Occured in load_object function utils
+[2025-06-26 23:34:19,617] 253 django.request - ERROR - Internal Server Error: /predict/
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 50, in load_object
+    with open(file_path,'rb') as file_obj:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 18, in predict
+    preprocessor=load_object(preprocessor_path)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 54, in load_object
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "E:\Ineuron_Project\predictor\views.py", line 28, in predict_datapoint
+    pred = predict_pipeline.predict(final_data)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 30, in predict
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py] line number [18] error message [Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']]
+[2025-06-26 23:37:18,937] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:37:18,938] 53 root - INFO - Exception Occured in load_object function utils
+[2025-06-26 23:37:19,024] 253 django.request - ERROR - Internal Server Error: /predict/
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 50, in load_object
+    with open(file_path,'rb') as file_obj:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 18, in predict
+    preprocessor=load_object(preprocessor_path)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 54, in load_object
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "E:\Ineuron_Project\predictor\views.py", line 28, in predict_datapoint
+    pred = predict_pipeline.predict(final_data)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 30, in predict
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py] line number [18] error message [Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']]
+[2025-06-26 23:37:24,936] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:37:24,936] 53 root - INFO - Exception Occured in load_object function utils
+[2025-06-26 23:37:25,014] 253 django.request - ERROR - Internal Server Error: /predict/
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 50, in load_object
+    with open(file_path,'rb') as file_obj:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 18, in predict
+    preprocessor=load_object(preprocessor_path)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 54, in load_object
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "E:\Ineuron_Project\predictor\views.py", line 28, in predict_datapoint
+    pred = predict_pipeline.predict(final_data)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 30, in predict
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py] line number [18] error message [Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']]
+[2025-06-26 23:39:40,539] 253 django.request - WARNING - Not Found: /favicon.ico
+[2025-06-26 23:39:51,194] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:44:07,745] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:45:51,520] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:57:18,696] 71 root - INFO - Dataframe Gathered
+[2025-06-27 00:05:15,086] 265 django.utils.autoreload - INFO - E:\Ineuron_Project\predictor\views.py changed, reloading.

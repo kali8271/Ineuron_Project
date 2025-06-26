@@ -1,0 +1,44 @@
+[2025-06-26 23:26:27,989] 97 werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.18.96.103:8080
+[2025-06-26 23:26:27,989] 97 werkzeug - INFO - [33mPress CTRL+C to quit[0m
+[2025-06-26 23:27:11,608] 97 werkzeug - INFO - 127.0.0.1 - - [26/Jun/2025 23:27:11] "GET / HTTP/1.1" 200 -
+[2025-06-26 23:27:11,719] 97 werkzeug - INFO - 127.0.0.1 - - [26/Jun/2025 23:27:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2025-06-26 23:27:18,683] 97 werkzeug - INFO - 127.0.0.1 - - [26/Jun/2025 23:27:18] "GET /predict HTTP/1.1" 200 -
+[2025-06-26 23:27:29,716] 71 root - INFO - Dataframe Gathered
+[2025-06-26 23:27:29,716] 53 root - INFO - Exception Occured in load_object function utils
+[2025-06-26 23:27:29,716] 875 app - ERROR - Exception on /predict [POST]
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 50, in load_object
+    with open(file_path,'rb') as file_obj:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 18, in predict
+    preprocessor=load_object(preprocessor_path)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py", line 54, in load_object
+    raise customexception(e,sys)
+DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\BKVY\AppData\Roaming\Python\Python313\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\Ineuron_Project\DimondPricePrediction\app.py", line 37, in predict_datapoint
+    pred=predict_pipeline.predict(final_data)
+  File "E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py", line 30, in predict
+    raise customexception(e,sys)
+source.DimondPricePrediction.exception.customexception: Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\pipelines\prediction_pipeline.py] line number [18] error message [Error occured in python script name [E:\Ineuron_Project\DimondPricePrediction\source\DimondPricePrediction\utils\utils.py] line number [50] error message [[Errno 2] No such file or directory: 'artifacts\\preprocessor.pkl']]
+[2025-06-26 23:27:29,723] 97 werkzeug - INFO - 127.0.0.1 - - [26/Jun/2025 23:27:29] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
