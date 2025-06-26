@@ -22,9 +22,9 @@ class ModelEvaluation:
         return rmse, mae, r2
 
 
-    def initiate_model_evaluation(self,train_array,test_array):
+    def initiate_model_evaluation(self,train_arr,test_arr):
         try:
-            X_test,y_test=(test_array[:,:-1], test_array[:,-1])
+            X_test,y_test=(test_arr[:,:-1], test_arr[:,-1])
 
             model_path=os.path.join("artifacts","model.pkl")
             model=load_object(model_path)

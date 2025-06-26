@@ -2,8 +2,7 @@ import pandas as pd
 import os
 import sys
 from sklearn.model_selection import train_test_split
-from dataclasses import dataclass
-from pathlib import Path
+
 from source.DimondPricePrediction.logger import logging
 from source.DimondPricePrediction.exception import customexception
 
