@@ -46,6 +46,19 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/" aria-current="page">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/predict/">Predict</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="/dashboard/">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="/profile/">Profile</a></li>
+                <li class="nav-item">
+                  <form method="post" action="/accounts/logout/" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link btn btn-link" style="display:inline; padding:0; border:none; background:none;">Logout</button>
+                  </form>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="/accounts/login/">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="/accounts/register/">Register</a></li>
+                {% endif %}
             </ul>
             <button id="theme-toggle" class="btn btn-outline-secondary ms-3" type="button" title="Toggle light/dark mode" aria-label="Toggle light or dark mode">
                 <span id="theme-icon" class="bi bi-moon" aria-hidden="true"></span> <span class="d-none d-md-inline">Theme</span>

@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from DimondPricePrediction.pipelines.prediction_pipeline import CustomData, PredictPipeline
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth import login, update_session_auth_hash, logout as auth_logout
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Prediction
@@ -228,3 +228,9 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'change_password.html', {'form': form})
+
+def custom_logout(request):
+    """Logs out the user and redirects to login page with a message."""
+    auth_logout(request)
+    messages.success(request, 'You have been logged out successfully.')
+    return redirect('login')
